@@ -49,6 +49,13 @@ tasks.test {
     useJUnitPlatform()
     // Allow ByteBuddy to attach its agent dynamically (required on Java 21+)
     jvmArgs("-XX:+EnableDynamicAgentLoading")
+
+    // Filtro por tag de Cucumber: .\gradlew.bat test -Ptags="@crear"
+    val tags = project.findProperty("tags") as String?
+    if (tags != null) {
+        systemProperty("cucumber.filter.tags", tags)
+    }
+
     testLogging {
         showStandardStreams = true
         events("passed", "failed", "skipped")
