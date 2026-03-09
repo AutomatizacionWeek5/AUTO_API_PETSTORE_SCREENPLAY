@@ -1,0 +1,1 @@
+rootProject.name = "AUTO_API_PETSTORE_SCREENPLAY"
