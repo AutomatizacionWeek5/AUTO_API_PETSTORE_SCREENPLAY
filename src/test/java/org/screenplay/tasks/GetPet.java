@@ -22,7 +22,9 @@ public class GetPet implements Task {
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
             Get.resource("/pet/{petId}")
-               .with(req -> req.pathParam("petId", petId))
+               .with(req -> req
+                   .pathParam("petId", petId)
+                   .log().all())
         );
     }
 

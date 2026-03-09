@@ -26,7 +26,8 @@ public class UpdatePet implements Task {
             Put.to("/pet")
                .with(req -> req
                    .contentType(ContentType.JSON)
-                   .body(pet))
+                   .body(pet)
+                   .log().all())
         );
     }
 

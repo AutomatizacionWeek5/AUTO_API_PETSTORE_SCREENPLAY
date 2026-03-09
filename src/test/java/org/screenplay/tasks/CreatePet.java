@@ -27,7 +27,8 @@ public class CreatePet implements Task {
             Post.to("/pet")
                 .with(req -> req
                     .contentType(ContentType.JSON)
-                    .body(pet))
+                    .body(pet)
+                    .log().all())
         );
     }
 

@@ -22,7 +22,9 @@ public class DeletePet implements Task {
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
             Delete.from("/pet/{petId}")
-                  .with(req -> req.pathParam("petId", petId))
+                  .with(req -> req
+                      .pathParam("petId", petId)
+                      .log().all())
         );
     }
 
