@@ -24,9 +24,9 @@ import static org.hamcrest.Matchers.equalTo;
 public class PetStoreStepDefinitions {
 
     // ID fijo para poder buscar la mascota en Swagger UI durante la depuración.
-    // Cámbialo a System.currentTimeMillis() % 9_000_000L + 1_000_000L en CI/CD
+    // Cámbialo a System.currentTimeMillis() % 9_000_000L + 1_000_000L en CI/CD o fijo 99999L
     // para evitar colisiones con otros usuarios de la API demo.
-    private final long petId = 99999L;
+    private final long petId = System.currentTimeMillis() % 9_000_000L + 1_000_000L;
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
 
