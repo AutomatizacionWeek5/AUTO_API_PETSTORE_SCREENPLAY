@@ -40,7 +40,7 @@ bin/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+
 .vscode/
 
 ### IntelliJ IDEA (completo) ###
