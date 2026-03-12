@@ -1,56 +1,55 @@
 #language: en
-Feature: Gestión de mascotas en PetStore API
+Feature: Gestión de mascotas en PetStore API - Operaciones CRUD
   Como usuario de la PetStore API
-  Quiero gestionar mascotas mediante operaciones CRUD
-  Para verificar la integridad del servicio REST
+  Quiero gestionar mascotas mediante operaciones CRUD individuales
+  Para verificar cada operación REST de forma aislada
+
+  Background:
+    Given el actor está configurado para llamar a la PetStore API
 
   @crud @crear
-  Scenario: Crear una nueva mascota via POST
-    Given el actor está configurado para llamar a la PetStore API
-    When el actor crea una mascota con nombre "Toby Marin" y estado "available"
+  Scenario Outline: Crear una nueva mascota via POST
+    When el actor crea una mascota con nombre "<nombre>" y estado "<estado>"
     Then el status code de la respuesta debe ser 200
+
+    Examples:
+      | nombre     | estado    |
+      | maxii      | available |
+      | Rex Garcia | pending   |
 
   @crud @consultar
-  Scenario: Consultar una mascota existente via GET
-    Given el actor está configurado para llamar a la PetStore API
-    When el actor crea una mascota con nombre "Toby Marin" y estado "available"
+  Scenario Outline: Consultar una mascota existente via GET
+    When el actor crea una mascota con nombre "<nombre>" y estado "<estado>"
     And el actor consulta la mascota creada
     Then el status code de la respuesta debe ser 200
-    And el nombre de la mascota debe ser "Toby Marin"
-    And el estado de la mascota debe ser "available"
+    And el nombre de la mascota debe ser "<nombre>"
+    And el estado de la mascota debe ser "<estado>"
+
+    Examples:
+      | nombre     | estado    |
+      | maxii      | available |
+      | Rex Garcia | pending   |
 
   @crud @actualizar
-  Scenario: Actualizar una mascota existente via PUT
-    Given el actor está configurado para llamar a la PetStore API
-    When el actor crea una mascota con nombre "Toby Marin" y estado "available"
-    And el actor actualiza la mascota con nombre "Toby Marin Actualizado" y estado "sold"
+  Scenario Outline: Actualizar una mascota existente via PUT
+    When el actor crea una mascota con nombre "<nombre_original>" y estado "<estado_original>"
+    And el actor actualiza la mascota con nombre "<nombre_actualizado>" y estado "<estado_actualizado>"
     Then el status code de la respuesta debe ser 200
-    And el nombre de la mascota debe ser "Toby Marin Actualizado"
-    And el estado de la mascota debe ser "sold"
+    And el nombre de la mascota debe ser "<nombre_actualizado>"
+    And el estado de la mascota debe ser "<estado_actualizado>"
+
+    Examples:
+      | nombre_original | estado_original | nombre_actualizado     | estado_actualizado |
+      | maxii           | available       | maxii Actualizado      | sold               |
+      | Rex Garcia      | pending         | Rex Garcia Actualizado | sold               |
 
   @crud @eliminar
-  Scenario: Eliminar una mascota existente via DELETE
-    Given el actor está configurado para llamar a la PetStore API
-    When el actor crea una mascota con nombre "Toby Marin" y estado "available"
+  Scenario Outline: Eliminar una mascota existente via DELETE
+    When el actor crea una mascota con nombre "<nombre>" y estado "<estado>"
     And el actor elimina la mascota
     Then el status code de la respuesta debe ser 200
 
-  @crud @flujo-completo
-  Scenario: Flujo completo CRUD de una mascota
-    Given el actor está configurado para llamar a la PetStore API
-
-    When el actor crea una mascota con nombre "Toby Marin" y estado "available"
-    Then el status code de la respuesta debe ser 200
-
-    When el actor consulta la mascota creada
-    Then el status code de la respuesta debe ser 200
-    And el nombre de la mascota debe ser "Toby Marin"
-    And el estado de la mascota debe ser "available"
-
-    When el actor actualiza la mascota con nombre "Toby Marin Actualizado" y estado "sold"
-    Then el status code de la respuesta debe ser 200
-    And el nombre de la mascota debe ser "Toby Marin Actualizado"
-    And el estado de la mascota debe ser "sold"
-
-    When el actor elimina la mascota
-    Then el status code de la respuesta debe ser 200
+    Examples:
+      | nombre                 | estado |
+      | maxii Actualizado      | sold   |
+      | Rex Garcia Actualizado | sold   |

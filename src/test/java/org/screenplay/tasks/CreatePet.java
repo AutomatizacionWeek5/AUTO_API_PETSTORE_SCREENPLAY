@@ -7,11 +7,6 @@ import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.rest.interactions.Post;
 import org.screenplay.model.Pet;
 
-/**
- * Task: POST /pet
- * Crea una nueva mascota en la PetStore y deja la respuesta disponible
- * para que las Questions la consulten después.
- */
 public class CreatePet implements Task {
 
     private final Pet pet;

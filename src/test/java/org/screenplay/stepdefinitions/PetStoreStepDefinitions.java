@@ -14,13 +14,6 @@ import org.screenplay.tasks.*;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static org.hamcrest.Matchers.equalTo;
 
-/**
- * Step Definitions que conectan los pasos Gherkin del .feature
- * con las Tasks, Questions y el Actor del patrón Screenplay.
- *
- * Flujo: cada escenario obtiene un Actor fresco desde OnStage.
- * El petId se genera por instancia para evitar colisiones en la API demo.
- */
 public class PetStoreStepDefinitions {
 
     // ID fijo para poder buscar la mascota en Swagger UI durante la depuración.

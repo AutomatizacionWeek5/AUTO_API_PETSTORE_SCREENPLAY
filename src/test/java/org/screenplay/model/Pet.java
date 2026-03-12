@@ -1,9 +1,5 @@
 package org.screenplay.model;
 
-/**
- * Modelo de datos que representa una mascota en la PetStore API.
- * Usa un fluent builder para facilitar la construcción legible en los tests.
- */
 public class Pet {
 
     private Long id;
@@ -19,7 +15,6 @@ public class Pet {
 
     // ── Factory / fluent builder ──────────────────────────────────────────────
 
-    /** Crea una mascota con nombre y estado "available" por defecto. */
     public static Pet called(String name) {
         Pet pet = new Pet();
         pet.name   = name;
@@ -27,13 +22,11 @@ public class Pet {
         return pet;
     }
 
-    /** Encadena un ID a la mascota (útil al actualizar). */
     public Pet withId(long id) {
         this.id = id;
         return this;
     }
 
-    /** Encadena un estado personalizado. */
     public Pet withStatus(String status) {
         this.status = status;
         return this;

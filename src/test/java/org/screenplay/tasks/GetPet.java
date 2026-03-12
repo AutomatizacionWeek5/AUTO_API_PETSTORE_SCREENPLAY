@@ -5,10 +5,6 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.rest.interactions.Get;
 
-/**
- * Task: GET /pet/{petId}
- * Consulta una mascota existente por su ID.
- */
 public class GetPet implements Task {
 
     private final long petId;

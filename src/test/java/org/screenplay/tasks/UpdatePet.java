@@ -7,10 +7,6 @@ import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.rest.interactions.Put;
 import org.screenplay.model.Pet;
 
-/**
- * Task: PUT /pet
- * Actualiza los datos de una mascota existente.
- */
 public class UpdatePet implements Task {
 
     private final Pet pet;

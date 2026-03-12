@@ -43,7 +43,8 @@ src/
     │       └── CucumberTestRunner.java        ← Punto de entrada (@Suite + Cucumber engine)
     └── resources/
         ├── features/petstore/
-        │   └── pet_crud.feature               ← Escenarios en Gherkin (Given/When/Then)
+        │   ├── pet_crud.feature               ← Escenarios CRUD individuales (data-driven)
+        │   └── pet_crud_flow.feature          ← Flujo E2E: POST → GET → PUT → DELETE
         ├── cucumber.properties                ← Configuración: glue, plugin, features
         └── serenity.conf                      ← Configuración de Serenity BDD
 ```
@@ -53,7 +54,8 @@ src/
 ## Patrón Screenplay + Cucumber
 
 ```
-pet_crud.feature  (Gherkin — qué se prueba, en lenguaje negocio)
+pet_crud.feature          (CRUD individuales — data-driven)
+pet_crud_flow.feature     (flujo E2E — POST → GET → PUT → DELETE)
         │
         ▼
 PetStoreStepDefinitions  (@Given / @When / @Then)
@@ -71,7 +73,7 @@ Actor  (OnStage)
 
 | Componente | Archivo | Qué hace |
 |---|---|---|
-| **Feature** | `pet_crud.feature` | Define los escenarios en Gherkin |
+| **Feature** | `pet_crud.feature` / `pet_crud_flow.feature` | Define los escenarios en Gherkin |
 | **Step Definitions** | `PetStoreStepDefinitions` | Conecta Gherkin con el código Java |
 | **Actor** | gestionado por `OnStage` | Sujeto que ejecuta y verifica |
 | **Ability** | `CallPetStoreApi` | Conoce la URL base de la API |
@@ -109,28 +111,38 @@ echo $env:JAVA_HOME
 .\gradlew.bat test
 ```
 
-### Ejecutar por operación (tags)
+### Ejecutar el flujo E2E completo
 
-Cada escenario tiene un tag `@crud` general y uno específico por operación.  
+El flujo E2E cubre el ciclo de vida completo: **POST → GET → PUT → DELETE** en un solo escenario.  
+Está definido en `pet_crud_flow.feature` con los tags `@e2e` y `@flujo-completo`:
+
+```powershell
+# Flujo completo E2E (por tag @e2e)
+.\gradlew.bat test -Ptags="@e2e"
+
+# Flujo completo E2E (por tag @flujo-completo)
+.\gradlew.bat test -Ptags="@flujo-completo"
+```
+
+### Ejecutar operaciones CRUD por separado
+
+Cada operación CRUD tiene su propio `Scenario Outline` data-driven en `pet_crud.feature`.  
 Usa `-Ptags` para filtrar (funciona correctamente en PowerShell):
 
 ```powershell
-# Solo el escenario de CREAR  (POST /pet)
+# Solo CREAR  (POST /pet)
 .\gradlew.bat test -Ptags="@crear"
 
-# Solo el escenario de CONSULTAR  (GET /pet/{id})
+# Solo CONSULTAR  (GET /pet/{id})
 .\gradlew.bat test -Ptags="@consultar"
 
-# Solo el escenario de ACTUALIZAR  (PUT /pet)
+# Solo ACTUALIZAR  (PUT /pet)
 .\gradlew.bat test -Ptags="@actualizar"
 
-# Solo el escenario de ELIMINAR  (DELETE /pet/{id})
+# Solo ELIMINAR  (DELETE /pet/{id})
 .\gradlew.bat test -Ptags="@eliminar"
 
-# Flujo completo CRUD en un solo escenario
-.\gradlew.bat test -Ptags="@flujo-completo"
-
-# Todos los escenarios del módulo CRUD
+# Todos los CRUDs individuales
 .\gradlew.bat test -Ptags="@crud"
 ```
 
@@ -148,16 +160,17 @@ Usa `-Ptags` para filtrar (funciona correctamente en PowerShell):
 
 ---
 
-## Tags disponibles en el Feature
+## Tags disponibles en los Features
 
-| Tag | Escenario | Operación HTTP |
-|---|---|---|
-| `@crear` | Crear una nueva mascota | `POST /pet` |
-| `@consultar` | Consultar una mascota existente | `GET /pet/{id}` |
-| `@actualizar` | Actualizar una mascota existente | `PUT /pet` |
-| `@eliminar` | Eliminar una mascota existente | `DELETE /pet/{id}` |
-| `@flujo-completo` | CRUD end-to-end en un solo escenario | POST → GET → PUT → DELETE |
-| `@crud` | Todos los escenarios anteriores | — |
+| Tag | Feature | Escenario | Operación HTTP |
+|---|---|---|---|
+| `@crear` | `pet_crud.feature` | Crear una nueva mascota | `POST /pet` |
+| `@consultar` | `pet_crud.feature` | Consultar una mascota existente | `GET /pet/{id}` |
+| `@actualizar` | `pet_crud.feature` | Actualizar una mascota existente | `PUT /pet` |
+| `@eliminar` | `pet_crud.feature` | Eliminar una mascota existente | `DELETE /pet/{id}` |
+| `@crud` | `pet_crud.feature` | Todas las operaciones CRUD individuales | — |
+| `@e2e` | `pet_crud_flow.feature` | Flujo completo E2E | POST → GET → PUT → DELETE |
+| `@flujo-completo` | `pet_crud_flow.feature` | Flujo completo E2E (alias) | POST → GET → PUT → DELETE |
 
 ---
 
@@ -165,7 +178,7 @@ Usa `-Ptags` para filtrar (funciona correctamente en PowerShell):
 
 ### Nombre y estado de la mascota → `.feature`
 
-Editar directamente [`src/test/resources/features/petstore/pet_crud.feature`](src/test/resources/features/petstore/pet_crud.feature):
+Editar directamente [`src/test/resources/features/petstore/pet_crud.feature`](src/test/resources/features/petstore/pet_crud.feature) o [`src/test/resources/features/petstore/pet_crud_flow.feature`](src/test/resources/features/petstore/pet_crud_flow.feature):
 
 ```gherkin
 When el actor crea una mascota con nombre "Toby Marin" y estado "available"
