@@ -6,7 +6,7 @@ import io.cucumber.java.en.*;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
-import org.screenplay.actions.CallPetStoreApi;
+import org.screenplay.interactions.CallPetStoreApi;
 import org.screenplay.model.Pet;
 import org.screenplay.questions.TheResponse;
 import org.screenplay.tasks.*;
@@ -20,8 +20,6 @@ public class PetStoreStepDefinitions {
     // Cámbialo a System.currentTimeMillis() % 9_000_000L + 1_000_000L en CI/CD o fijo 99999L
     // para evitar colisiones con otros usuarios de la API demo.
     private final long petId = System.currentTimeMillis() % 9_000_000L + 1_000_000L;
-
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
 
     @Before
     public void prepararEscenario() {

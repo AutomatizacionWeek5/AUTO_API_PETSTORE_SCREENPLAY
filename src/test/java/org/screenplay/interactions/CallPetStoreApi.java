@@ -1,4 +1,4 @@
-package org.screenplay.actions;
+package org.screenplay.interactions;
 
 import net.serenitybdd.screenplay.Ability;
 import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
