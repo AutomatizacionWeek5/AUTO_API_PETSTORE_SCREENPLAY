@@ -8,12 +8,10 @@ public class Pet {
 
     private Pet() {}
 
-    // ── Getters ──────────────────────────────────────────────────────────────
     public Long getId()     { return id;     }
     public String getName() { return name;   }
     public String getStatus() { return status; }
 
-    // ── Factory / fluent builder ──────────────────────────────────────────────
 
     public static Pet called(String name) {
         Pet pet = new Pet();

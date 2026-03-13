@@ -16,9 +16,6 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class PetStoreStepDefinitions {
 
-    // ID fijo para poder buscar la mascota en Swagger UI durante la depuración.
-    // Cámbialo a System.currentTimeMillis() % 9_000_000L + 1_000_000L en CI/CD o fijo 99999L
-    // para evitar colisiones con otros usuarios de la API demo.
     private final long petId = System.currentTimeMillis() % 9_000_000L + 1_000_000L;
 
     @Before
@@ -31,15 +28,11 @@ public class PetStoreStepDefinitions {
         OnStage.drawTheCurtain();
     }
 
-    // ── Given ─────────────────────────────────────────────────────────────────
-
     @Given("el actor está configurado para llamar a la PetStore API")
     public void elActorEstaConfiguradoParaLlamarALaPetStoreAPI() {
         OnStage.theActorCalled("Tester")
                .whoCan(CallPetStoreApi.asAnon());
     }
-
-    // ── When ──────────────────────────────────────────────────────────────────
 
     @When("el actor crea una mascota con nombre {string} y estado {string}")
     public void elActorCreaUnaMascota(String nombre, String estado) {
@@ -63,8 +56,6 @@ public class PetStoreStepDefinitions {
         actor().attemptsTo(DeletePet.withId(petId));
     }
 
-    // ── Then ──────────────────────────────────────────────────────────────────
-
     @Then("el status code de la respuesta debe ser {int}")
     public void elStatusCodeDebeSerX(int statusEsperado) {
         actor().should(
@@ -85,8 +76,6 @@ public class PetStoreStepDefinitions {
             seeThat("el estado de la mascota", TheResponse.petStatus(), equalTo(estadoEsperado))
         );
     }
-
-    // ── Helper ────────────────────────────────────────────────────────────────
 
     private Actor actor() {
         return OnStage.theActorInTheSpotlight();
